@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#0e0b1a"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Access Consciousness · Pregunta del Día</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;overflow:hidden;}
+  body{
+    background:linear-gradient(135deg,#0e0b1a 0%,#150d2e 55%,#0e1520 100%);
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    font-family:'Jost',sans-serif;position:relative;overflow:hidden;
+  }
+
+  /* Orbs */
+  .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;}
+  .o1{width:500px;height:500px;background:radial-gradient(circle,rgba(0,200,200,.13) 0%,transparent 70%);top:-120px;left:-140px;}
+  .o2{width:420px;height:420px;background:radial-gradient(circle,rgba(140,0,255,.13) 0%,transparent 70%);bottom:-100px;right:-120px;}
+  .o3{width:300px;height:300px;background:radial-gradient(circle,rgba(212,60,160,.10) 0%,transparent 70%);top:40%;left:55%;}
+
+  /* Layout */
+  .wrap{
+    width:100%;max-width:520px;padding:24px 20px;
+    display:flex;flex-direction:column;align-items:center;gap:22px;
+    position:relative;z-index:1;
+  }
+
+  /* Header */
+  .logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:6px;}
+  .sym{color:#d4a800;font-size:13px;opacity:.8;}
+  .logo-txt{font-weight:300;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+  .date{font-weight:300;font-size:12px;color:rgba(255,255,255,.25);letter-spacing:.04em;text-align:center;}
+
+  /* Card */
+  .card{
+    width:100%;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    padding:36px 28px;
+    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);
+    display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;
+    opacity:0;transform:translateY(24px) scale(.97);
+    transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .85s cubic-bezier(.22,1,.36,1);
+  }
+  .card.show{opacity:1;transform:translateY(0) scale(1);}
+
+  /* Badge */
+  .badge{
+    background:linear-gradient(135deg,rgba(0,200,200,.15),rgba(140,0,255,.15));
+    border:1px solid rgba(0,200,200,.25);
+    border-radius:999px;padding:5px 18px;
+  }
+  .badge-txt{
+    font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    background:linear-gradient(90deg,#00c8c8,#b400ff);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+
+  .q-label{font-weight:300;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.27);}
+
+  /* Question */
+  .question{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:clamp(1.2rem,5vw,1.55rem);line-height:1.72;
+    color:rgba(255,255,255,.92);letter-spacing:.01em;
+  }
+  .qq{color:#d4a800;font-size:1.8em;line-height:0;vertical-align:-.32em;font-style:normal;opacity:.72;}
+  .ql{margin-right:3px;} .qr{margin-left:3px;}
+
+  .divider{width:44px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,60,160,.55),transparent);}
+
+  .hint{font-weight:300;font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.03em;font-style:italic;line-height:1.6;}
+
+  /* Buttons */
+  .btn-row{display:flex;gap:10px;width:100%;justify-content:center;flex-wrap:wrap;}
+
+  .btn{
+    padding:11px 22px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);
+    color:rgba(255,255,255,.6);
+    font-family:'Jost',sans-serif;font-weight:400;font-size:12px;letter-spacing:.1em;
+    cursor:pointer;transition:all .22s ease;-webkit-appearance:none;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn.primary{
+    background:linear-gradient(135deg,rgba(0,200,200,.18),rgba(140,0,255,.18));
+    border-color:rgba(0,200,200,.3);color:rgba(0,220,220,.9);
+  }
+  .btn.share{
+    background:linear-gradient(135deg,rgba(212,60,160,.18),rgba(212,168,0,.18));
+    border-color:rgba(212,60,160,.3);color:rgba(220,100,180,.9);
+  }
+  .btn.copied{background:rgba(0,200,200,.2);border-color:rgba(0,200,200,.5);color:#00d4d4;}
+
+  /* Nav */
+  .nav{display:flex;align-items:center;gap:14px;}
+  .nav-btn{
+    background:transparent;border:1px solid rgba(255,255,255,.1);
+    border-radius:999px;padding:8px 20px;
+    color:rgba(255,255,255,.32);font-family:'Jost',sans-serif;
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    cursor:pointer;transition:all .2s;-webkit-appearance:none;
+  }
+  .nav-btn:active{transform:scale(.96);}
+  .counter{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.08em;min-width:48px;text-align:center;}
+
+  .footer{font-weight:300;font-size:10px;color:rgba(255,255,255,.15);letter-spacing:.1em;text-align:center;}
+
+  /* Toast */
+  .toast{
+    position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:rgba(0,200,200,.15);border:1px solid rgba(0,200,200,.3);
+    color:#00d4d4;font-family:'Jost',sans-serif;font-size:13px;letter-spacing:.08em;
+    padding:10px 24px;border-radius:999px;backdrop-filter:blur(12px);
+    opacity:0;transition:all .3s ease;pointer-events:none;white-space:nowrap;z-index:99;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<div class="wrap">
+
+  <div>
+    <div class="logo-row">
+      <span class="sym">✦</span>
+      <span class="logo-txt">Access Consciousness</span>
+      <span class="sym">✦</span>
+    </div>
+    <p class="date" id="dateEl"></p>
+  </div>
+
+  <div class="card" id="card">
+    <div class="badge"><span class="badge-txt" id="toolEl"></span></div>
+    <p class="q-label">Tu pregunta de hoy</p>
+    <p class="question" id="questionEl"></p>
+    <div class="divider"></div>
+    <p class="hint">Siéntate con esta pregunta.<br>No la respondas — déjala expandirte.</p>
+    <div class="btn-row">
+      <button class="btn primary" id="copyBtn" onclick="copyQ()">Copiar pregunta</button>
+      <button class="btn share" onclick="shareQ()">Compartir ✦</button>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn" onclick="prev()">← Anterior</button>
+    <span class="counter" id="counterEl"></span>
+    <button class="nav-btn" onclick="next()">Siguiente →</button>
+  </div>
+
+  <p class="footer">Una nueva pregunta cada día · 31 herramientas de consciencia</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions=[
+  {tool:"Clearings",text:"¿Qué estoy sosteniendo como real que no lo es, y que si lo soltara cambiaría todo en mi vida ahora?"},
+  {tool:"Choice",text:"¿Qué elección puedo hacer hoy que cree más de lo que deseo que exista en mi mundo?"},
+  {tool:"Verdad o Mentira",text:"¿Esta situación que me preocupa es una verdad o una mentira para mí? ¿Qué es lo ligero aquí?"},
+  {tool:"¿Y si...?",text:"¿Y si el problema que crees que tienes no es el problema real? ¿Qué más es posible?"},
+  {tool:"Barreras & Muros",text:"¿Qué barreras he creado para no recibir todo lo bueno que el universo desea darme?"},
+  {tool:"Puntos de Vista",text:"¿Qué punto de vista estoy haciendo tan real y tan sólido que me impide avanzar?"},
+  {tool:"Seguir la Energía",text:"¿Qué energía, espacio y conciencia puedo ser hoy que expanda mi vida con facilidad?"},
+  {tool:"El Universo como Aliado",text:"¿Cómo puede el universo conspirar hoy a mi favor de maneras que no he considerado aún?"},
+  {tool:"Síes y Nos",text:"¿Cuántos síes estoy diciendo que en realidad son noes para mí, y cuántos noes son realmente síes?"},
+  {tool:"Preguntas Generativas",text:"¿Qué sé que sé que aún no he reconocido que, si lo reconociera, cambiaría todo?"},
+  {tool:"Ligereza vs Pesadez",text:"¿Qué en tu vida se siente pesado hoy y qué se siente ligero? La ligereza es siempre tu verdad."},
+  {tool:"Ser vs Hacer",text:"¿Qué si en lugar de hacer más, simplemente fueras más hoy? ¿Qué cambiaría?"},
+  {tool:"Los Juicios",text:"¿A quién o qué estás juzgando hoy que te está costando tu libertad y tu alegría?"},
+  {tool:"Recibir",text:"¿Qué tan dispuest@ estás a recibir hoy sin límites, sin conclusiones y sin rechazar nada?"},
+  {tool:"Presencia Total",text:"¿Qué pasaría si estuvieras completamente presente en este momento, sin pasado ni futuro?"},
+  {tool:"Conciencia",text:"¿Qué conciencia estás evitando que, si la abrazaras, crearía una realidad diferente?"},
+  {tool:"Allowance",text:"¿Qué si todo lo que ocurre hoy —incluso lo que no te gusta— simplemente ES, sin que lo hagas incorrecto?"},
+  {tool:"POC & POD",text:"¿Qué estás manteniendo de todas las vidas pasadas, presentes y futuras que bloquea tu expansión ahora mismo?"},
+  {tool:"Tu Saber",text:"¿Cuánto de lo que ya sabes estás descartando porque no encaja con lo que otros creen?"},
+  {tool:"Creación",text:"¿Qué crearías hoy si supieras que no puedes fallar y que el universo te respalda completamente?"},
+  {tool:"Gratitud Expandida",text:"¿Qué si cada cosa que consideras un problema es en realidad el universo preparándote para algo mayor?"},
+  {tool:"El Futuro",text:"¿Qué futuro estás eligiendo hoy con cada pensamiento, palabra y acción que tomas?"},
+  {tool:"Cuerpo & Saber",text:"¿Qué sabe tu cuerpo hoy que tu mente está ignorando? ¿Puedes escucharlo?"},
+  {tool:"Dinero & Flujo",text:"¿Qué relación tienes con el dinero que no te sirve, y qué sería posible si la cambiases ahora?"},
+  {tool:"Relaciones",text:"¿Qué estás eligiendo en tus relaciones que crea limitación en lugar de expansión?"},
+  {tool:"Ligereza Total",text:"¿Qué si no hay nada malo contigo? ¿Qué si eres exactamente lo que el mundo necesita?"},
+  {tool:"Posibilidad",text:"¿Qué posibilidades existen hoy que no has considerado porque las descartaste antes de explorarlas?"},
+  {tool:"Energía del Cambio",text:"¿Qué cambio, por pequeño que sea, puedes hacer hoy que mueva toda tu realidad hacia algo nuevo?"},
+  {tool:"Abundancia",text:"¿Dónde estás viviendo en escasez —de tiempo, amor, dinero, alegría— y qué elección te sacaría de ahí?"},
+  {tool:"Autenticidad",text:"¿Qué parte de ti has estado ocultando que, si la mostraras hoy, te haría más libre?"},
+  {tool:"Jugando Grande",text:"¿Qué si el universo te está pidiendo que juegues más grande de lo que crees que puedes? ¿Qué dirías que sí?"},
+];
+
+function getDayIndex(){
+  const n=new Date(),s=new Date(n.getFullYear(),0,0);
+  return Math.floor((n-s)/(864e5))%questions.length;
+}
+
+let current=getDayIndex();
+
+function render(){
+  const q=questions[current];
+  document.getElementById('toolEl').textContent=q.tool;
+  document.getElementById('questionEl').innerHTML=
+    `<span class="qq ql">\u201C</span>${q.text}<span class="qq qr">\u201D</span>`;
+  document.getElementById('counterEl').textContent=`${current+1} / ${questions.length}`;
+  const btn=document.getElementById('copyBtn');
+  btn.textContent='Copiar pregunta';btn.className='btn primary';
+}
+
+function prev(){current=(current-1+questions.length)%questions.length;render();}
+function next(){current=(current+1)%questions.length;render();}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function copyQ(){
+  const txt=questions[current].text;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    btn.textContent='✓ Copiada';btn.className='btn copied';
+    setTimeout(()=>{btn.textContent='Copiar pregunta';btn.className='btn primary';},2000);
+  }).catch(()=>showToast('Selecciona el texto manualmente'));
+}
+
+function shareQ(){
+  const q=questions[current];
+  const msg=`✦ Access Consciousness · ${q.tool} ✦\n\n"${q.text}"\n\n🌀 Pregunta del día`;
+  if(navigator.share){
+    navigator.share({title:'Access Consciousness',text:msg}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(msg).then(()=>showToast('¡Texto copiado para compartir!'));
+  }
+}
+
+// Fecha
+const hoy=new Date().toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+document.getElementById('dateEl').textContent=hoy.charAt(0).toUpperCase()+hoy.slice(1);
+
+// Init
+render();
+setTimeout(()=>document.getElementById('card').classList.add('show'),300);
+</script>
+</body>
+</html>
